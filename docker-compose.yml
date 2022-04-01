@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:5.0.6
+    container_name: dev-mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - db-data:/data/db
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=admin
+    - MONGO_INITDB_ROOT_PASSWORD=S3cret
+
+volumes:
+  db-data:
+
