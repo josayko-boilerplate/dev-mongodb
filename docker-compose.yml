@@ -9,8 +9,8 @@ services:
     volumes:
       - db-data:/data/db
     environment:
-    - MONGO_INITDB_ROOT_USERNAME=admin
-    - MONGO_INITDB_ROOT_PASSWORD=S3cret
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: S3cret
 
 volumes:
   db-data:
