@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0.5
+    command: ["--replSet", "rs", "--bind_ip_all", "--port", "21664"]
+    container_name: sofya-rs
+    ports:
+      - 21664:21664
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs',members:[{_id:0,host:'host.docker.internal:21664'}]}) }" | mongosh --port 21664 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+    volumes:
+      - rs-data:/data/db
+      - rs-config:/data/configdb
+
+volumes:
+  rs-data:
+  rs-config:
+
