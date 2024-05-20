@@ -1,17 +1,7 @@
 services:
   mongo:
     image: mongo:7
-    # command: ["--replSet", "rs", "--bind_ip_all", "--port", "27019", "--keyFile", "/etc/mongodb/pki/rs_keyfile"]
-    command: [
-      "--replSet", "rs",
-      "--bind_ip_all",
-      "--port", "27017", 
-      "--keyFile", "/etc/mongodb/pki/rs_keyfile",
-      "--tlsMode", "requireTLS",
-      "--tlsCertificateKeyFile", "/etc/ssl/certs/mongodb_node_1.pem",
-      "--tlsCAFile", "/etc/ssl/certs/ca.pem",
-      "--tlsAllowConnectionsWithoutCertificates"
-    ]
+    command: ["mongod", "--config", "/etc/mongod.conf"]
     container_name: mongo-rs
     ports:
       - 27017:27017
@@ -26,13 +16,12 @@ services:
       start_interval: 1s
       retries: 30
     volumes:
+      - ${PWD}/mongod.conf:/etc/mongod.conf
       - ${PWD}/pki:/etc/mongodb/pki
       - ${PWD}/tls/mongodb_node_1.pem:/etc/ssl/certs/mongodb_node_1.pem
       - ${PWD}/tls/ca.pem:/etc/ssl/certs/ca.pem
       - rs-data:/data/db
-      - rs-config:/data/configdb
 
 volumes:
   rs-data:
-  rs-config:
 
